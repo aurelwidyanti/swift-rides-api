@@ -10,10 +10,16 @@ class Booking extends Model
     protected $fillable = [
         'user_id',
         'car_id',
+        'address_id',
         'total_price',
         'start_date',
         'end_date',
         'status',
+    ];
+
+    protected $casts = [
+        'price' => 'float',
+        'total_price' => 'float',
     ];
 
     public function user()
@@ -24,6 +30,11 @@ class Booking extends Model
     public function car()
     {
         return $this->belongsTo(Car::class);
+    }
+
+    public function address()
+    {
+        return $this->belongsTo(Address::class);
     }
 
     protected static function boot()

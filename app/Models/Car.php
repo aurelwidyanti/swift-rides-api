@@ -9,10 +9,20 @@ class Car extends Model
     protected $fillable = [
         'name',
         'brand',
+        'type',
+        'fuel',
+        'transmission',
+        'seat',
+        'description',
+        'image',
         'year',
         'license_plate',
         'price',
         'status',
+    ];
+
+    protected $casts = [
+        'price' => 'float',
     ];
 
     public function bookings()

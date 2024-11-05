@@ -60,8 +60,7 @@ class BookingResource extends Resource
                             }
                         }
                     })
-                    ->label('Total Price')
-                    ->disabled(),
+                    ->label('Total Price'),
 
                 Forms\Components\Select::make('status')
                     ->options([

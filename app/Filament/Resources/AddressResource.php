@@ -28,9 +28,13 @@ class AddressResource extends Resource
                     ->required()
                     ->label('User'),
 
-                Forms\Components\TextInput::make('address')
+                Forms\Components\TextInput::make('city')
                     ->required()
-                    ->label('Address'),
+                    ->label('City'),
+
+                Forms\Components\TextInput::make('street')
+                    ->required()
+                    ->label('Street'),
 
                 Forms\Components\DateTimePicker::make('created_at')
                     ->disabled()
@@ -47,7 +51,8 @@ class AddressResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')->label('User'),
-                Tables\Columns\TextColumn::make('address')->label('Address'),
+                Tables\Columns\TextColumn::make('city')->label('City'),
+                Tables\Columns\TextColumn::make('street')->label('Street'),
                 Tables\Columns\TextColumn::make('created_at')->label('Created At')->dateTime(),
                 Tables\Columns\TextColumn::make('updated_at')->label('Updated At')->dateTime(),
             ])

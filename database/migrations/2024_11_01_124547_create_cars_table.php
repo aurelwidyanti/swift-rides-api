@@ -15,6 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('brand');
             $table->string('name');
+            $table->string('type');
+            $table->string('fuel');
+            $table->string('transmission');
+            $table->integer('seat');
+            $table->text('description');
+            $table->string('image');
             $table->integer('year');
             $table->string('license_plate');
             $table->decimal('price', 15, 2);
