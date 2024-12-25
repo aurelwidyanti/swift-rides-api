@@ -14,7 +14,7 @@ class CarSeeder extends Seeder
     {
         $cars = [
             [
-                'name' => 'BMW M4 Competition',
+                'name' => 'M4 Competition',
                 'brand' => 'BMW',
                 'type' => 'Coupe',
                 'price' => 800000,
@@ -28,7 +28,7 @@ class CarSeeder extends Seeder
                 'status' => 'available',
             ],
             [
-                'name' => 'BMW M4 Convertible',
+                'name' => 'M4 Convertible',
                 'brand' => 'BMW',
                 'type' => 'Cabriolet',
                 'price' => 750000,
@@ -42,7 +42,7 @@ class CarSeeder extends Seeder
                 'status' => 'available',
             ],
             [
-                'name' => 'BMW M2 Coupe',
+                'name' => 'M2',
                 'brand' => 'BMW',
                 'type' => 'Coupe',
                 'price' => 600000,
@@ -55,6 +55,20 @@ class CarSeeder extends Seeder
                 'license_plate' => 'B 1030 DEF',
                 'status' => 'available',
             ],
+            [
+                'name' => '3',
+                'brand' => 'Mazda',
+                'type' => 'Hatchback',
+                'price' => 400000,
+                'year' => 2023,
+                'fuel' => 'Gasoline',
+                'transmission' => 'Automatic',
+                'seat' => 5,
+                'description' => 'The Mazda 3 Hatchback is a compact car that is powered by a 2.5-liter four-cylinder engine that produces 186 horsepower and 186 lb-ft of torque. The Mazda 3 Hatchback can accelerate from 0-60 mph in just 7.2 seconds and has a top speed of 130 mph.',
+                'image' => 'mazda-3.png',
+                'license_plate' => 'B 1040 GHI',
+                'status' => 'available',
+            ]
         ];
 
 
