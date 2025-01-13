@@ -103,15 +103,15 @@ class BookingResource extends Resource
             ->filters([
                 Tables\Filters\Filter::make('weekly')
                     ->label('This Week')
-                    ->query(fn(Builder $query) => $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])),
+                    ->query(fn(Builder $query) => $query->whereBetween('start_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])),
 
                 Tables\Filters\Filter::make('monthly')
                     ->label('This Month')
-                    ->query(fn(Builder $query) => $query->whereMonth('created_at', Carbon::now()->month)),
+                    ->query(fn(Builder $query) => $query->whereMonth('start_date', Carbon::now()->month)),
 
                 Tables\Filters\Filter::make('yearly')
                     ->label('This Year')
-                    ->query(fn(Builder $query) => $query->whereYear('created_at', Carbon::now()->year)),
+                    ->query(fn(Builder $query) => $query->whereYear('start_date', Carbon::now()->year)),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -121,14 +121,6 @@ class BookingResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-            // ->footer([
-            //     // Menambahkan row custom untuk total revenue
-            //     Tables\Columns\TextColumn::make('total_revenue')
-            //         ->label('Total Revenue')
-            //         ->formatStateUsing(fn() => 'Rp. ' . number_format($totalRevenue, 0, ',', '.'))
-            //         ->alignCenter()
-            //         ->colspan(8) // Menyebar ke seluruh kolom
-            // ]);
     }
 
     public static function getRelations(): array
@@ -146,25 +138,4 @@ class BookingResource extends Resource
             'edit' => Pages\EditBooking::route('/{record}/edit'),
         ];
     }
-
-    // public static function calculateTotalRevenue(string $period): float
-    // {
-    //     $query = Booking::query();
-
-    //     switch ($period) {
-    //         case 'weekly':
-    //             $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
-    //             break;
-
-    //         case 'monthly':
-    //             $query->whereMonth('created_at', Carbon::now()->month);
-    //             break;
-
-    //         case 'yearly':
-    //             $query->whereYear('created_at', Carbon::now()->year);
-    //             break;
-    //     }
-
-    //     return $query->sum('total_price');
-    // }
 }
