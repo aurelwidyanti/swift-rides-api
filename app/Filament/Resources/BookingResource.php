@@ -80,8 +80,8 @@ class BookingResource extends Resource
 
     public static function table(Table $table): Table
     {
-        $period = 'monthly';  // Ganti dengan periode sesuai keinginan
-        $totalRevenue = static::calculateTotalRevenue($period); // Hitung total revenue
+        // $period = 'monthly';  // Ganti dengan periode sesuai keinginan
+        // $totalRevenue = static::calculateTotalRevenue($period); // Hitung total revenue
         
         return $table
             ->columns([
