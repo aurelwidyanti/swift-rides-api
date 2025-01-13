@@ -17,6 +17,7 @@ use Filament\Tables\Columns\Summarizers\Range;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Columns\Summarizers\Sum;
 
 class BookingResource extends Resource
 {
@@ -92,10 +93,7 @@ class BookingResource extends Resource
                 Tables\Columns\TextColumn::make('start_date')->label('Start Date')->dateTime(),
                 Tables\Columns\TextColumn::make('end_date')->label('End Date')->dateTime(),
                 Tables\Columns\TextColumn::make('total_price')
-                ->summarize([
-                    Average::make(),
-                    Range::make(),
-                ])
+                ->summarize(Sum::make())
                 ->label('Total Price'),
                 Tables\Columns\TextColumn::make('payment_type')->label('Payment Type'),
                 Tables\Columns\TextColumn::make('status')->label('Status'),
