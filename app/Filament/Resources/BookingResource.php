@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\BookingResource\Pages;
 use App\Filament\Resources\BookingResource\RelationManagers;
 use App\Models\Booking;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
@@ -75,6 +76,9 @@ class BookingResource extends Resource
 
     public static function table(Table $table): Table
     {
+        $period = 'monthly';  // Ganti dengan periode sesuai keinginan
+        $totalRevenue = static::calculateTotalRevenue($period); // Hitung total revenue
+        
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('car.name')->label('Car'),
@@ -87,7 +91,17 @@ class BookingResource extends Resource
                 Tables\Columns\TextColumn::make('updated_at')->label('Updated At')->dateTime(),
             ])
             ->filters([
-                //
+                Tables\Filters\Filter::make('weekly')
+                    ->label('This Week')
+                    ->query(fn(Builder $query) => $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])),
+
+                Tables\Filters\Filter::make('monthly')
+                    ->label('This Month')
+                    ->query(fn(Builder $query) => $query->whereMonth('created_at', Carbon::now()->month)),
+
+                Tables\Filters\Filter::make('yearly')
+                    ->label('This Year')
+                    ->query(fn(Builder $query) => $query->whereYear('created_at', Carbon::now()->year)),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -97,6 +111,14 @@ class BookingResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+            // ->footer([
+            //     // Menambahkan row custom untuk total revenue
+            //     Tables\Columns\TextColumn::make('total_revenue')
+            //         ->label('Total Revenue')
+            //         ->formatStateUsing(fn() => 'Rp. ' . number_format($totalRevenue, 0, ',', '.'))
+            //         ->alignCenter()
+            //         ->colspan(8) // Menyebar ke seluruh kolom
+            // ]);
     }
 
     public static function getRelations(): array
@@ -114,4 +136,25 @@ class BookingResource extends Resource
             'edit' => Pages\EditBooking::route('/{record}/edit'),
         ];
     }
+
+    // public static function calculateTotalRevenue(string $period): float
+    // {
+    //     $query = Booking::query();
+
+    //     switch ($period) {
+    //         case 'weekly':
+    //             $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
+    //             break;
+
+    //         case 'monthly':
+    //             $query->whereMonth('created_at', Carbon::now()->month);
+    //             break;
+
+    //         case 'yearly':
+    //             $query->whereYear('created_at', Carbon::now()->year);
+    //             break;
+    //     }
+
+    //     return $query->sum('total_price');
+    // }
 }

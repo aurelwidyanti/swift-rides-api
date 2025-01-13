@@ -154,4 +154,36 @@ class CarController extends Controller
             'message' => 'Car deleted successfully'
         ], Response::HTTP_OK);
     }
+
+    /**
+     * Search by name or type the specified resource from storage.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function search(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'nullable|string|max:255',
+            'type' => 'nullable|string|max:255',
+        ]);
+
+        $query = Car::query();
+
+        if (!empty($validated['name'])) {
+            $query->where('name', 'like', '%' . $validated['name'] . '%');
+        }
+
+        if (!empty($validated['type'])) {
+            $query->orWhere('type', 'like', '%' . $validated['type'] . '%');
+        }
+
+        $cars = $query->get();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Cars retrieved successfully',
+            'data' => $cars
+        ], Response::HTTP_OK);
+    }
 }

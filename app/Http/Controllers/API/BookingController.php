@@ -8,6 +8,8 @@ use App\Models\Car;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Midtrans\Config;
+use Midtrans\Snap;
 
 class BookingController extends Controller
 {
@@ -205,5 +207,73 @@ class BookingController extends Controller
             'status' => 'success',
             'message' => 'Booking deleted successfully'
         ], Response::HTTP_OK);
+    }
+
+    public function createTransaction(Request $request)
+    {
+        $validated = $request->validate([
+            'id' => 'required|string',
+            'car_id' => 'required|integer|exists:cars,id',
+            'days' => 'required|integer',
+
+        ]);
+
+        if (!$validated) {
+            return response()->json([
+                'message' => 'Invalid request',
+            ], 400);
+        }
+
+        // Check if car is available
+        $car = Car::find($validated['car_id']);
+        if ($car->status !== 'available') {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Car is not available for booking'
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Set Midtrans configuration
+        Config::$serverKey = env('MIDTRANS_SERVER_KEY');
+        Config::$clientKey = env('MIDTRANS_CLIENT_KEY');
+        Config::$isProduction = env('MIDTRANS_IS_PRODUCTION', false);
+        Config::$isSanitized = true;
+        Config::$is3ds = true;
+
+        $validated['price'] = $car->price;
+        $validated['car_name'] = $car->brand . ' ' . $car->name;
+
+        $params = [
+            'transaction_details' => [
+                'order_id' => $validated['id'],
+                'gross_amount' => $validated['price'] * $validated['days'],
+            ],
+            'item_details' => [
+                [
+                    'id' => $validated['id'],
+                    'price' => $validated['price'],
+                    'quantity' => $validated['days'],
+                    'name' => $validated['car_name'],
+                ]
+            ],
+            'customer_details' => [
+                'first_name' => 'Customer',
+                'email' => 'customer@example.com',
+            ]
+        ];
+
+        try {
+            $snapToken = Snap::getSnapToken($params);
+
+            return response()->json([
+                'token' => $snapToken,
+                'message' => 'Transaction token created successfully',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to create transaction token',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 }
