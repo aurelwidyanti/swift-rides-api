@@ -103,15 +103,18 @@ class BookingResource extends Resource
             ->filters([
                 Tables\Filters\Filter::make('weekly')
                     ->label('This Week')
-                    ->query(fn(Builder $query) => $query->whereBetween('start_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])),
+                    ->query(fn(Builder $query) => $query->whereBetween('start_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]))
+                    ->toggle(),
 
                 Tables\Filters\Filter::make('monthly')
                     ->label('This Month')
-                    ->query(fn(Builder $query) => $query->whereMonth('start_date', Carbon::now()->month)),
+                    ->query(fn(Builder $query) => $query->whereMonth('start_date', Carbon::now()->month))
+                    ->toggle(),
 
                 Tables\Filters\Filter::make('yearly')
                     ->label('This Year')
-                    ->query(fn(Builder $query) => $query->whereYear('start_date', Carbon::now()->year)),
+                    ->query(fn(Builder $query) => $query->whereYear('start_date', Carbon::now()->year))
+                    ->toggle(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
