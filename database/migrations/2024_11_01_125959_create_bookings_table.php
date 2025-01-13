@@ -19,6 +19,7 @@ return new class extends Migration
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->decimal('total_price', 15, 2)->default(0);
+            $table->string('payment_type');
             $table->enum('status', ['pending', 'confirmed', 'canceled', 'completed'])->default('pending');
             $table->timestamps();
         });

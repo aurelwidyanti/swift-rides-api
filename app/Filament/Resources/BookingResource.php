@@ -63,6 +63,10 @@ class BookingResource extends Resource
                     })
                     ->label('Total Price'),
 
+                Forms\Components\TextInput::make('payment_type')
+                    ->required()
+                    ->label('Payment Type'),
+
                 Forms\Components\Select::make('status')
                     ->options([
                         'pending' => 'Pending',
@@ -86,6 +90,7 @@ class BookingResource extends Resource
                 Tables\Columns\TextColumn::make('start_date')->label('Start Date')->dateTime(),
                 Tables\Columns\TextColumn::make('end_date')->label('End Date')->dateTime(),
                 Tables\Columns\TextColumn::make('total_price')->label('Total Price'),
+                Tables\Columns\TextColumn::make('payment_type')->label('Payment Type'),
                 Tables\Columns\TextColumn::make('status')->label('Status'),
                 Tables\Columns\TextColumn::make('created_at')->label('Created At')->dateTime(),
                 Tables\Columns\TextColumn::make('updated_at')->label('Updated At')->dateTime(),
