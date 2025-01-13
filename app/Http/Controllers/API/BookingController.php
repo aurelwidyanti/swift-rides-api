@@ -109,7 +109,7 @@ class BookingController extends Controller
      */
     public function bookingsByUser()
     {
-        $booking = Booking::with('user', 'car', 'address')->where('user_id', Auth::user()->id)->get();
+        $booking = Booking::with('user', 'car', 'address')->where('user_id', Auth::user()->id)->orderBy('created_by', 'desc')->get();
 
         return response()->json([
             'status' => 'success',
